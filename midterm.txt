@@ -141,6 +141,8 @@ static void ExecuteCommand(const char *command)
         if (p1 != NULL) {
             blink_interval = atoi(p1);
             if (blink_interval < 1) blink_interval = 1;
+        } else {
+            blink_interval = 500; // 如果沒輸入參數，自動恢復預設值 500
         }
 
         // 參數二：亮度百分比檢查與更新
@@ -148,14 +150,17 @@ static void ExecuteCommand(const char *command)
             uint32_t bri_percent = atoi(p2);
             if (bri_percent > 100) bri_percent = 100;
             target_brightness = (bri_percent * 999) / 100;
+        } else {
+            target_brightness = 500; // 恢復預設亮度 50%
         }
 
-        // 參數三：蜂鳴器間隔檢查與更新（允許極限到 1ms）
+        // 參數三：蜂鳴器間隔檢查與更新
         if (p3 != NULL) {
             buzzer_interval = atoi(p3);
             if (buzzer_interval < 1) buzzer_interval = 1;
+        } else {
+            buzzer_interval = 500; // 恢復預設蜂鳴器間隔 500
         }
-
         /* 回傳設定成功訊息與目前實際生效的參數狀態 */
         char msg[64];                     // 宣告回傳訊息緩衝陣列
         sprintf(msg, "OK: Mode Set (Int:%d, Bri:%d%%, Buz:%d)\r\n",
